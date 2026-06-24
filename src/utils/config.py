@@ -5,6 +5,20 @@ from dotenv import load_dotenv
 # Load environment variables from .env if present
 load_dotenv()
 
+
+def _get_groq_api_key() -> str:
+    """Return the Groq API key from Streamlit secrets first, then .env."""
+    try:
+        import streamlit as st
+
+        secrets_value = st.secrets.get("GROQ", {}).get("API_KEY", "")
+        if secrets_value:
+            return str(secrets_value)
+    except Exception:
+        pass
+
+    return os.getenv("GROQ_API_KEY", "")
+
 # Base project directory
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -18,7 +32,7 @@ for directory in [DATA_DIR, VECTOR_DB_DIR, LOGS_DIR]:
     directory.mkdir(parents=True, exist_ok=True)
 
 # Groq API Configuration
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_API_KEY = _get_groq_api_key()
 
 # Embedding Configuration
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-small-en-v1.5")

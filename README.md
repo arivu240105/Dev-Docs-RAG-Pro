@@ -117,6 +117,12 @@ Open `.env` and configure your Groq API Key:
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
+For Streamlit, you can also store the key securely in `.streamlit/secrets.toml`:
+```toml
+[GROQ]
+API_KEY = "your_groq_api_key_here"
+```
+
 ### 5. Run the Streamlit Application
 ```bash
 streamlit run app.py
